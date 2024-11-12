@@ -23,12 +23,14 @@
     "android": {
       "splash": {
         "image": "./assets/images/splash.png"
-      }
+      },
+      "package": "com.douglowderexpo.SleepsTillChristmas"
     },
     "ios": {
       "splash": {
         "image": "./assets/images/splash.png"
-      }
+      },
+      "bundleIdentifier": "com.douglowderexpo.SleepsTillChristmas"
     },
     "experiments": {
       "typedRoutes": true
