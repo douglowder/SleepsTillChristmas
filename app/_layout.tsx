@@ -7,6 +7,7 @@ export default function RootLayout() {
         name="index"
         options={{
           title: 'Merry Christmas',
+          headerShown: false,
         }}
       />
     </Stack>
