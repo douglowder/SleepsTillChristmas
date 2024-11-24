@@ -17,8 +17,15 @@
           }
         }
       ],
+      [
+        "expo-asset",
+        {
+          "assets": ["./assets/audio/o-christmas-tree.mp3"]
+        }
+      ],
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "expo-audio"
     ],
     "android": {
       "splash": {

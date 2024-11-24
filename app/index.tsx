@@ -2,11 +2,13 @@ import { ThemedText as Text } from '@/components/ThemedText';
 import { ThemedView as View } from '@/components/ThemedView';
 import { ImageBackground } from 'expo-image';
 import { DateTime, Interval } from 'luxon';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Button } from 'react-native';
 import { useState } from 'react';
 import { useInterval } from '@/hooks/useInterval';
+import { useAudioPlayer } from 'expo-audio';
 
 const image = require('@/assets/images/morriscropped.jpg');
+const audioSource = require('@/assets/audio/o-christmas-tree.mp3');
 
 type TimeLeft = {
   days: number;
@@ -47,6 +49,8 @@ const useTimeLeft = () => {
 };
 
 export default function Index() {
+  const player = useAudioPlayer(audioSource);
+
   const { days, hours, minutes, seconds } = useTimeLeft();
   return (
     <View style={styles.container}>
@@ -57,6 +61,7 @@ export default function Index() {
         <Text
           style={styles.text}
         >{`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}</Text>
+        <Button title="Play Sound" onPress={() => player.play()} />
       </ImageBackground>
     </View>
   );
