@@ -1,67 +1,42 @@
 import { ThemedText as Text } from '@/components/ThemedText';
 import { ThemedView as View } from '@/components/ThemedView';
 import { ImageBackground } from 'expo-image';
-import { DateTime, Interval } from 'luxon';
 import { StyleSheet, Button } from 'react-native';
-import { useState } from 'react';
-import { useInterval } from '@/hooks/useInterval';
+import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
 import { useAudioPlayer } from 'expo-audio';
+import { useState } from 'react';
 
 const image = require('@/assets/images/morriscropped.jpg');
 const audioSource = require('@/assets/audio/o-christmas-tree.mp3');
 
-type TimeLeft = {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-};
-
-const calculateTimeLeft: () => TimeLeft = () => {
-  const date = DateTime.now();
-  const christmas = DateTime.local(2024, 12, 25, 0, 0);
-  const interval = Interval.fromDateTimes(date, christmas);
-  const days = Math.floor(interval.length('days'));
-  const hours = Math.floor(interval.length('hours') - 24 * days);
-  const minutes = Math.floor(
-    interval.length('minutes') - 60 * hours - 24 * 60 * days,
-  );
-  const seconds = Math.floor(
-    interval.length('seconds') -
-      60 * minutes -
-      60 * 60 * hours -
-      24 * 60 * 60 * days,
-  );
-  return {
-    days,
-    hours,
-    minutes,
-    seconds,
-  };
-};
-
-const useTimeLeft = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
-  useInterval(() => {
-    setTimeLeft(calculateTimeLeft());
-  }, 1000);
-  return timeLeft;
-};
-
 export default function Index() {
   const player = useAudioPlayer(audioSource);
+  const [playing, setPlaying] = useState(false);
 
-  const { days, hours, minutes, seconds } = useTimeLeft();
+  const { days, hours, minutes, seconds, sleeps } = useTimeTillChristmas();
   return (
     <View style={styles.container}>
       <ImageBackground contentFit="contain" style={styles.image} source={image}>
-        <Text style={styles.titleText}>{`Only ${
-          days + 1
-        } sleeps until Christmas!`}</Text>
+        <Text
+          style={styles.titleText}
+        >{`Only ${sleeps} sleeps until Christmas!`}</Text>
         <Text
           style={styles.text}
         >{`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}</Text>
-        <Button title="Play Sound" onPress={() => player.play()} />
+        <View style={{ flex: 1 }} />
+        <Button
+          title={playing ? 'Pause Music' : 'Play Music'}
+          onPress={() => {
+            if (playing) {
+              player.pause();
+              setPlaying(false);
+            } else {
+              player.play();
+              setPlaying(true);
+            }
+          }}
+        />
+        <View style={{ height: 100 }} />
       </ImageBackground>
     </View>
   );
