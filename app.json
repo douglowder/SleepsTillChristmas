@@ -40,8 +40,10 @@
       "bundleIdentifier": "com.douglowderexpo.SleepsTillChristmas"
     },
     "experiments": {
+      "tsconfigPaths": true,
       "typedRoutes": true
     },
+    "scheme": "sleepstillchristmas",
     "name": "SleepsTillChristmas",
     "slug": "SleepsTillChristmas"
   }
