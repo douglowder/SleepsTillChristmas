@@ -45,7 +45,7 @@ export default function Index() {
         <View className="flex-1 w-screen" />
         <Pressable
           onPress={togglePlayer}
-          className="transition duration-500 focus:scale-105 active:scale-110"
+          className="transition duration-500 hover:scale-110 focus:scale-110 active:scale-125"
         >
           <Text className="text-green-600 text-2xl text-center font-bold">
             {playing ? 'Pause Music' : 'Play Music'}
