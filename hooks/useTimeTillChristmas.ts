@@ -1,4 +1,4 @@
-import { DateTime, Interval } from 'luxon';
+import { DateTime, Duration, Interval } from 'luxon';
 import { useEffect, useRef, useState } from 'react';
 
 /**
@@ -21,27 +21,31 @@ export type TimeLeft = {
   hours: number;
   minutes: number;
   seconds: number;
-  sleeps: number;
 };
 
-const calculateTimeLeft: () => TimeLeft = () => {
-  const date = DateTime.now();
-  const christmas = DateTime.local(2024, 12, 25, 0, 0);
-  const interval = Interval.fromDateTimes(date, christmas);
+export const calculateTimeLeft: (currentDateTime?: DateTime) => TimeLeft = (
+  currentDateTime,
+) => {
+  let date = currentDateTime ?? DateTime.now();
+  let year = 2024;
+  // add a second, intervals include start but not end
+  let christmas = DateTime.local(year, 12, 25, 0, 0, 0);
+  let interval = Interval.fromDateTimes(date, christmas.plus(1));
+  while (!interval.isValid) {
+    // Increase year until Christmas happens after the current date
+    year = year + 1;
+    christmas = DateTime.local(year, 12, 25, 0, 0, 0);
+    interval = Interval.fromDateTimes(date, christmas.plus(1));
+  }
   const days = Math.floor(interval.length('days'));
-  const hours = Math.floor(interval.length('hours') - 24 * days);
-  const minutes = Math.floor(
-    interval.length('minutes') - 60 * (hours + 24 * days),
-  );
-  const seconds = Math.floor(
-    interval.length('seconds') - 60 * (minutes + 60 * (hours + 24 * days)),
-  );
+  const hours = Math.floor(interval.length('hours'));
+  const minutes = Math.floor(interval.length('minutes'));
+  const seconds = Math.floor(interval.length('seconds'));
   return {
     days,
-    hours,
-    minutes,
-    seconds,
-    sleeps: days + 1,
+    hours: hours - 24 * days,
+    minutes: minutes - 60 * hours,
+    seconds: seconds - 60 * minutes,
   };
 };
 
