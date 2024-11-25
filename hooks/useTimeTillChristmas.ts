@@ -1,17 +1,19 @@
-import { DateTime, Duration, Interval } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { useEffect, useRef, useState } from 'react';
 
 /**
  * A handy hook for finding out how long it will be before Santa arrives
  *
  * @param timeBetweenChecks Optional interval (seconds) between hook updates (defaults to 1 second)
- * @returns the days, hours, minutes, seconds, and sleeps until Christmas 2024
+ * @returns the days, hours, minutes, seconds, and sleeps until Christmas
  */
 export const useTimeTillChristmas = (timeBetweenChecks?: number) => {
   const interval = (timeBetweenChecks ?? 1) * 1000;
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(
+    calculateTimeLeftTillChristmas(),
+  );
   useInterval(() => {
-    setTimeLeft(calculateTimeLeft());
+    setTimeLeft(calculateTimeLeftTillChristmas());
   }, interval);
   return timeLeft;
 };
@@ -23,12 +25,27 @@ export type TimeLeft = {
   seconds: number;
 };
 
-export const calculateTimeLeft: (currentDateTime?: DateTime) => TimeLeft = (
-  currentDateTime,
+/**
+ * Calculates the days, hours, minutes, and seconds until the next Christmas
+ * @param epoch Optional DateTime object, defaults to the current time
+ * @returns the days, hours, minutes, seconds, and sleeps until the next Christmas following the epoch
+ */
+export const calculateTimeLeftTillChristmas: (epoch?: DateTime) => TimeLeft = (
+  epoch,
 ) => {
-  let date = currentDateTime ?? DateTime.now();
+  let date = epoch ?? DateTime.now();
+  // Check to see if Christmas is today
+  if (date.month === 12 && date.day === 25) {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+  }
+  // Start with 2024 -- if interval not valid (negative),
+  // keep adding years until Christmas is after the current date
   let year = 2024;
-  // add a second, intervals include start but not end
   let christmas = DateTime.local(year, 12, 25, 0, 0, 0);
   let interval = Interval.fromDateTimes(date, christmas.plus(1));
   while (!interval.isValid) {
@@ -37,15 +54,16 @@ export const calculateTimeLeft: (currentDateTime?: DateTime) => TimeLeft = (
     christmas = DateTime.local(year, 12, 25, 0, 0, 0);
     interval = Interval.fromDateTimes(date, christmas.plus(1));
   }
-  const days = Math.floor(interval.length('days'));
-  const hours = Math.floor(interval.length('hours'));
-  const minutes = Math.floor(interval.length('minutes'));
-  const seconds = Math.floor(interval.length('seconds'));
+  // Extract interval length and return the TimeLeft object
+  const intervalLengthInDays = Math.floor(interval.length('days'));
+  const intervalLengthInHours = Math.floor(interval.length('hours'));
+  const intervalLengthInMinutes = Math.floor(interval.length('minutes'));
+  const intervalLengthInSeconds = Math.floor(interval.length('seconds'));
   return {
-    days,
-    hours: hours - 24 * days,
-    minutes: minutes - 60 * hours,
-    seconds: seconds - 60 * minutes,
+    days: intervalLengthInDays,
+    hours: intervalLengthInHours - 24 * intervalLengthInDays,
+    minutes: intervalLengthInMinutes - 60 * intervalLengthInHours,
+    seconds: intervalLengthInSeconds - 60 * intervalLengthInMinutes,
   };
 };
 
