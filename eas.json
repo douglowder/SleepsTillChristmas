@@ -39,6 +39,10 @@
         "EXPO_TV": "1"
       }
     },
+    "preview_device": {
+      "extends": "production",
+      "distribution": "internal"
+    },
     "production": {},
     "production_tv": {
       "extends": "production", 

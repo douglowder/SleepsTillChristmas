@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "routertv",
+    "scheme": "sleepstillchristmas",
     "plugins": [
       [
         "@react-native-tvos/config-tv",
@@ -20,7 +20,9 @@
       [
         "expo-asset",
         {
-          "assets": ["./assets/audio/o-christmas-tree.mp3"]
+          "assets": [
+            "./assets/audio/o-christmas-tree.mp3"
+          ]
         }
       ],
       "expo-router",
@@ -28,15 +30,13 @@
       "expo-audio"
     ],
     "android": {
-      "splash": {
-        "image": "./assets/images/splash.png"
-      },
-      "package": "com.douglowder.SleepsTillChristmas"
+      "package": "com.douglowder.SleepsTillChristmas",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "ios": {
-      "splash": {
-        "image": "./assets/images/splash.png"
-      },
       "supportsTablet": true,
       "bundleIdentifier": "com.douglowder.SleepsTillChristmas"
     },
@@ -44,8 +44,16 @@
       "tsconfigPaths": true,
       "typedRoutes": true
     },
-    "scheme": "sleepstillchristmas",
+    "splash": {
+      "image": "./assets/images/splash.png"
+    },
+    "icon": "./assets/images/icon.png",
     "name": "SleepsTillChristmas",
-    "slug": "SleepsTillChristmas"
+    "slug": "SleepsTillChristmas",
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    }
   }
 }
