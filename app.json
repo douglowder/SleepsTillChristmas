@@ -37,6 +37,7 @@
       "splash": {
         "image": "./assets/images/splash.png"
       },
+      "supportsTablet": true,
       "bundleIdentifier": "com.douglowder.SleepsTillChristmas"
     },
     "experiments": {
