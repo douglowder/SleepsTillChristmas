@@ -3,7 +3,7 @@ import { ImageBackground } from 'expo-image';
 import { Text, View, Pressable, Platform } from 'react-native';
 import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import '../global.css';
 
@@ -13,35 +13,52 @@ const audioSource = require('@/assets/audio/o-christmas-tree.mp3');
 const theme = vars({});
 
 import '../global.css';
+import { useAppState } from '@/hooks/useAppState';
+
+const fractionCompleteFromPosition = (
+  position: number | undefined,
+  duration: number | undefined,
+) => {
+  return duration !== undefined ? (position ?? 0) / duration : 0;
+};
 
 export default function Index() {
-  const [playing, setPlaying] = useState(false);
-  const player = useAudioPlayer(audioSource);
-  useEffect(() => {
-    const subscription = player.addListener(
-      'playbackStatusUpdate',
-      (status) => {
-        if (status.playing && status.currentTime > 0.98 * player.duration) {
-          player.pause();
-          player.seekTo(0);
-          player.play();
-        }
-      },
-    );
-    return () => {
-      subscription.remove();
-    };
-  }, [player]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [fractionComplete, setFractionComplete] = useState(0);
 
-  const togglePlayer = useCallback(() => {
-    if (playing) {
+  const player = useAudioPlayer(audioSource, 1000);
+  const status = useAudioPlayerStatus(player);
+
+  useAppState((activating) => {
+    if (!activating) {
       player.pause();
-      setPlaying(false);
+    }
+  });
+
+  useEffect(() => {
+    if (status.playing) {
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
+    setFractionComplete(
+      fractionCompleteFromPosition(status.currentTime, player.duration),
+    );
+  }, [status.playing, status.currentTime]);
+
+  useEffect(() => {
+    if (fractionComplete > 0.99) {
+      player.seekTo(0);
+    }
+  }, [fractionComplete]);
+
+  const togglePlayer = () => {
+    if (isPlaying) {
+      player.pause();
     } else {
       player.play();
-      setPlaying(true);
     }
-  }, [player]);
+  };
 
   const { days, hours, minutes, seconds } = useTimeTillChristmas();
   return (
@@ -56,7 +73,7 @@ export default function Index() {
         {Platform.isTV && (
           <Pressable onPress={togglePlayer} className={pressableStyle}>
             <Text className={pressableTextStyle}>
-              {playing ? 'Pause Music' : 'Play Music'}
+              {isPlaying ? 'Pause Music' : 'Play Music'}
             </Text>
           </Pressable>
         )}
@@ -72,7 +89,7 @@ export default function Index() {
         <View className={textContainerStyle}>
           <Pressable onPress={togglePlayer} className={pressableStyle}>
             <Text className={pressableTextStyle}>
-              {playing ? 'Pause Music' : 'Play Music'}
+              {isPlaying ? 'Pause Music' : 'Play Music'}
             </Text>
           </Pressable>
         </View>
