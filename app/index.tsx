@@ -2,8 +2,8 @@ import { vars } from 'nativewind';
 import { ImageBackground } from 'expo-image';
 import { Text, View, Pressable, Platform } from 'react-native';
 import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
-import { useAudioPlayer } from 'expo-audio';
-import { useCallback, useState } from 'react';
+import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
+import { useCallback, useEffect, useState } from 'react';
 
 import '../global.css';
 
@@ -15,8 +15,24 @@ const theme = vars({});
 import '../global.css';
 
 export default function Index() {
-  const player = useAudioPlayer(audioSource);
   const [playing, setPlaying] = useState(false);
+  const player = useAudioPlayer(audioSource);
+  useEffect(() => {
+    const subscription = player.addListener(
+      'playbackStatusUpdate',
+      (status) => {
+        if (status.playing && status.currentTime > 0.98 * player.duration) {
+          player.pause();
+          player.seekTo(0);
+          player.play();
+        }
+      },
+    );
+    return () => {
+      subscription.remove();
+    };
+  }, [player]);
+
   const togglePlayer = useCallback(() => {
     if (playing) {
       player.pause();
@@ -25,7 +41,7 @@ export default function Index() {
       player.play();
       setPlaying(true);
     }
-  }, [player, playing]);
+  }, [player]);
 
   const { days, hours, minutes, seconds } = useTimeTillChristmas();
   return (
