@@ -99,8 +99,8 @@ export default function Index() {
 }
 
 const mainViewStyle = Platform.isTV
-  ? 'flex-1 flex-row justify-center items-center bg-[#ffffcc] px-[200] py-[0]'
-  : 'flex-1 justify-center items-center bg-[#ffffcc] px-[0] py-[100]';
+  ? 'flex-1 flex-row justify-center items-center bg-[#ffffcc] px-[200]'
+  : 'flex-1 justify-center items-center bg-[#ffffcc] py-[150]';
 
 const imageStyle = 'flex-1 justify-center';
 const imageSpacerStyle = Platform.isTV ? 'flex-1 w-[700]' : 'flex-1 w-screen';
