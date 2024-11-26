@@ -31,13 +31,13 @@
       "splash": {
         "image": "./assets/images/splash.png"
       },
-      "package": "com.douglowderexpo.SleepsTillChristmas"
+      "package": "com.douglowder.SleepsTillChristmas"
     },
     "ios": {
       "splash": {
         "image": "./assets/images/splash.png"
       },
-      "bundleIdentifier": "com.douglowderexpo.SleepsTillChristmas"
+      "bundleIdentifier": "com.douglowder.SleepsTillChristmas"
     },
     "experiments": {
       "tsconfigPaths": true,
