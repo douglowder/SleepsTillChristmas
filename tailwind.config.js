@@ -7,8 +7,6 @@ module.exports = {
     'hooks/*.{js,jsx,ts,tsx}',
   ],
   presets: [require('nativewind/preset')],
-  theme: {
-    extend: {},
-  },
+  theme: {},
   plugins: [],
 };
