@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "sleepstillchristmas",
+    "scheme": "dougschristmascountdown",
     "plugins": [
       [
         "@react-native-tvos/config-tv",
@@ -30,7 +30,7 @@
       "expo-audio"
     ],
     "android": {
-      "package": "com.douglowder.SleepsTillChristmas",
+      "package": "com.douglowder.DougsChristmasCountdown",
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
@@ -48,8 +48,8 @@
       "image": "./assets/images/splash.png"
     },
     "icon": "./assets/images/icon.png",
-    "name": "SleepsTillChristmas",
-    "slug": "SleepsTillChristmas",
+    "name": "DougsChristmasCountdown",
+    "slug": "DougsChristmasCountdown",
     "extra": {
       "router": {
         "origin": false
