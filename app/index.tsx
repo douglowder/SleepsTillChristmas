@@ -1,6 +1,6 @@
 import { vars } from 'nativewind';
 import { ImageBackground } from 'expo-image';
-import { Text, View, Pressable, Platform } from 'react-native';
+import { Text, View, Pressable, Platform, Dimensions } from 'react-native';
 import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,8 @@ import '../global.css';
 
 const image = require('@/assets/images/morriscropped.jpg');
 const audioSource = require('@/assets/audio/o-christmas-tree.mp3');
+
+const { width } = Dimensions.get('screen');
 
 const theme = vars({});
 
@@ -24,12 +26,16 @@ const fractionCompleteFromPosition = (
 
 export default function Index() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [wasPlaying, setWasPlaying] = useState(false);
   const [fractionComplete, setFractionComplete] = useState(0);
 
   const player = useAudioPlayer(audioSource, 1000);
   const status = useAudioPlayerStatus(player);
 
   useAppState((activating) => {
+    if (activating && wasPlaying) {
+      player.play();
+    }
     if (!activating) {
       player.pause();
     }
@@ -55,8 +61,10 @@ export default function Index() {
   const togglePlayer = () => {
     if (isPlaying) {
       player.pause();
+      setWasPlaying(false);
     } else {
       player.play();
+      setWasPlaying(true);
     }
   };
 
@@ -73,7 +81,7 @@ export default function Index() {
         {Platform.isTV && (
           <Pressable onPress={togglePlayer} className={pressableStyle}>
             <Text className={pressableTextStyle}>
-              {isPlaying ? 'Pause Music' : 'Play Music'}
+              {wasPlaying ? 'Pause Music' : 'Play Music'}
             </Text>
           </Pressable>
         )}
@@ -103,7 +111,7 @@ const mainViewStyle = Platform.isTV
   : 'flex-1 justify-center items-center bg-[#ffffcc] py-[150]';
 
 const imageStyle = 'flex-1 justify-center';
-const imageSpacerStyle = Platform.isTV ? 'flex-1 w-[700]' : 'flex-1 w-screen';
+const imageSpacerStyle = Platform.isTV ? 'flex-1 h-screen' : 'flex-1 w-screen';
 
 const sleepsTextStyle = Platform.isTV
   ? 'm-[10] text-red-600 font-bold text-6xl text-center'
