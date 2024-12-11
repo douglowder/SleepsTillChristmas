@@ -1,6 +1,13 @@
 import { vars } from 'nativewind';
 import { ImageBackground } from 'expo-image';
-import { Text, View, Pressable, Platform, Dimensions } from 'react-native';
+import {
+  Text,
+  View,
+  Pressable,
+  Platform,
+  Dimensions,
+  SafeAreaView,
+} from 'react-native';
 import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { useEffect, useState } from 'react';
@@ -12,7 +19,15 @@ const audioSource = require('@/assets/audio/o-christmas-tree.mp3');
 
 const { width } = Dimensions.get('screen');
 
-const theme = vars({});
+const imageWidth = 798;
+const imageHeight = 926;
+
+const scaledHeight = Math.floor((width * imageHeight) / imageWidth);
+
+const theme = vars({
+  '--image-height': scaledHeight,
+  '--image-width': width,
+});
 
 import '../global.css';
 import { useAppState } from '@/hooks/useAppState';
@@ -70,57 +85,53 @@ export default function Index() {
 
   const { days, hours, minutes, seconds } = useTimeTillChristmas();
   return (
-    <View style={theme} className={mainViewStyle}>
-      <View className={textContainerStyle}>
-        <Text className={sleepsTextStyle}>{`Only ${
-          days + 1
-        } sleeps until Christmas!`}</Text>
-        <Text
-          className={timeTextStyle}
-        >{`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}</Text>
-        {Platform.isTV && (
-          <Pressable onPress={togglePlayer} className={pressableStyle}>
-            <Text className={pressableTextStyle}>
-              {wasPlaying ? 'Pause Music' : 'Play Music'}
-            </Text>
-          </Pressable>
-        )}
-      </View>
-      <ImageBackground
-        contentFit="contain"
-        className={imageStyle}
-        source={image}
-      >
-        <View className={imageSpacerStyle} />
-      </ImageBackground>
-      {!Platform.isTV && (
-        <View className={textContainerStyle}>
-          <Pressable onPress={togglePlayer} className={pressableStyle}>
-            <Text className={pressableTextStyle}>
-              {isPlaying ? 'Pause Music' : 'Play Music'}
-            </Text>
-          </Pressable>
+    <SafeAreaView
+      style={theme}
+      className="flex-1 justify-center items-start bg-[#ffffcc]"
+    >
+      <View className="flex-1 justify-center w-screen">
+        <View className="flex-1 justify-end items-center">
+          <Text className="text-red-600 font-bold text-2xl text-center">{`Only ${
+            days + 1
+          } sleeps until Christmas!`}</Text>
         </View>
-      )}
-    </View>
+        <View className="mx-[10] my-[5] flex-1 justify-start items-start">
+          <Text className="text-green-600 text-xl text-start">{`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}</Text>
+        </View>
+      </View>
+      <ImageBackground contentFit="contain" source={image}>
+        <View className="h-[--image-height] w-[--image-width]" />
+      </ImageBackground>
+      <View className="flex-1 justify-center w-screen">
+        <Pressable
+          onPress={togglePlayer}
+          className="transition duration-500 hover:scale-110 focus:scale-110 active:scale-125"
+        >
+          <Text className="text-green-800 font-bold text-2xl text-center">
+            {wasPlaying ? 'Pause Music' : 'Play Music'}
+          </Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const mainViewStyle = Platform.isTV
   ? 'flex-1 flex-row justify-center items-center bg-[#ffffcc] px-[200]'
-  : 'flex-1 justify-center items-center bg-[#ffffcc] py-[150]';
+  : 'flex-1 justify-center items-start bg-[#ffffcc]';
 
-const imageStyle = 'flex-1 justify-center';
-const imageSpacerStyle = Platform.isTV ? 'flex-1 h-screen' : 'flex-1 w-screen';
+const imageSpacerStyle = Platform.isTV
+  ? 'flex-1 h-screen'
+  : 'h-[--image-height] w-[--image-width]';
 
 const sleepsTextStyle = Platform.isTV
   ? 'm-[10] text-red-600 font-bold text-6xl text-center'
-  : 'm-[10] text-red-600 font-bold text-2xl text-center';
+  : 'm-[10] text-red-600 font-bold text-2xl text-start';
 const timeTextStyle = Platform.isTV
   ? 'm-[10] text-green-600 text-4xl text-center'
-  : 'm-[10] text-green-600 text-xl text-center';
+  : 'm-[10] text-green-600 text-xl text-start';
 
-const textContainerStyle = 'justify-center items-center';
+const textContainerStyle = 'flex-1 justify-center items-start';
 
 const pressableStyle =
   'transition duration-500 hover:scale-110 focus:scale-110 active:scale-125';
