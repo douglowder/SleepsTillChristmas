@@ -44,7 +44,9 @@
       "extends": "production",
       "distribution": "internal"
     },
-    "production": {},
+    "production": {
+      "autoIncrement": true
+    },
     "production_tv": {
       "extends": "production", 
       "env": {
