@@ -90,17 +90,21 @@ export default function Index() {
       className="flex-1 justify-center items-start bg-[#ffffcc]"
     >
       <View className="flex-1 justify-center w-screen">
-        <View className="flex-1 justify-end items-center">
+        <View className="flex-1 justify-center items-center">
           <Text className="text-red-600 font-bold text-2xl text-center">{`Only ${
             days + 1
           } sleeps until Christmas!`}</Text>
         </View>
-        <View className="mx-[10] my-[5] flex-1 justify-start items-start">
-          <Text className="text-green-600 text-xl text-start">{`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}</Text>
-        </View>
       </View>
       <ImageBackground contentFit="contain" source={image}>
-        <View className="h-[--image-height] w-[--image-width]" />
+        <View className="h-[--image-height] w-[--image-width]">
+          <View className="mx-[20] p-[10] flex-1 justify-start items-start">
+            <Text className="text-green-600 text-xl text-start">{`${days} days`}</Text>
+            <Text className="text-green-600 text-xl text-start">{`${hours} hours`}</Text>
+            <Text className="text-green-600 text-xl text-start">{`${minutes} minutes`}</Text>
+            <Text className="text-green-600 text-xl text-start">{`${seconds} seconds`}</Text>
+          </View>
+        </View>
       </ImageBackground>
       <View className="flex-1 justify-center w-screen">
         <Pressable
@@ -115,26 +119,3 @@ export default function Index() {
     </SafeAreaView>
   );
 }
-
-const mainViewStyle = Platform.isTV
-  ? 'flex-1 flex-row justify-center items-center bg-[#ffffcc] px-[200]'
-  : 'flex-1 justify-center items-start bg-[#ffffcc]';
-
-const imageSpacerStyle = Platform.isTV
-  ? 'flex-1 h-screen'
-  : 'h-[--image-height] w-[--image-width]';
-
-const sleepsTextStyle = Platform.isTV
-  ? 'm-[10] text-red-600 font-bold text-6xl text-center'
-  : 'm-[10] text-red-600 font-bold text-2xl text-start';
-const timeTextStyle = Platform.isTV
-  ? 'm-[10] text-green-600 text-4xl text-center'
-  : 'm-[10] text-green-600 text-xl text-start';
-
-const textContainerStyle = 'flex-1 justify-center items-start';
-
-const pressableStyle =
-  'transition duration-500 hover:scale-110 focus:scale-110 active:scale-125';
-const pressableTextStyle = Platform.isTV
-  ? 'text-green-800 font-bold text-6xl text-center m-[100]'
-  : 'text-green-800 font-bold text-2xl text-center';
