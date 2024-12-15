@@ -1,17 +1,11 @@
 import { vars } from 'nativewind';
 import { ImageBackground } from 'expo-image';
-import {
-  Text,
-  View,
-  Pressable,
-  Platform,
-  Dimensions,
-  SafeAreaView,
-  useWindowDimensions,
-} from 'react-native';
-import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
+import { Text, View, Pressable, SafeAreaView } from 'react-native';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { useEffect, useState } from 'react';
+
+import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
+import { useScaling } from '@/hooks/useScaling';
 
 import '../global.css';
 
@@ -50,28 +44,39 @@ function ViewWrapper(props: {
   );
 }
 
+function SleepsView() {
+  const { days } = useTimeTillChristmas(60.0);
+  return (
+    <View className="flex-1 justify-center items-center">
+      <Text className="text-red-600 font-bold text-2xl text-center">{`Only ${
+        days + 1
+      } sleeps until Christmas!`}</Text>
+    </View>
+  );
+}
+
+function CountdownView() {
+  const { days, hours, minutes, seconds } = useTimeTillChristmas();
+  return (
+    <View className="mx-[20] p-[10] flex-1 justify-start items-start">
+      <Text className="text-green-600 text-xl text-start">{`${days} days`}</Text>
+      <Text className="text-green-600 text-xl text-start">{`${hours} hours`}</Text>
+      <Text className="text-green-600 text-xl text-start">{`${minutes} minutes`}</Text>
+      <Text className="text-green-600 text-xl text-start">{`${seconds} seconds`}</Text>
+    </View>
+  );
+}
 export default function Index() {
-  const { width, height } = useWindowDimensions();
-
-  const imageWidth = 798;
-  const imageHeight = 926;
-
-  const scaledHeight =
-    height > width ? Math.floor((width * imageHeight) / imageWidth) : height;
-  const scaledWidth =
-    height > width ? width : (height * imageWidth) / imageHeight;
-  const starTop = Math.floor((scaledHeight * 20) / 435);
-  const starRight = Math.floor((scaledWidth * 85) / 375);
-  const starSize = Math.floor((scaledWidth * 40) / 375);
+  const { imageWidth, imageHeight, starTop, starRight, starSize, landscape } =
+    useScaling();
 
   const theme = vars({
-    '--image-height': scaledHeight,
-    '--image-width': scaledWidth,
+    '--image-height': imageWidth,
+    '--image-width': imageHeight,
     '--star-top': starTop,
     '--star-right': starRight,
     '--star-size': starSize,
     '--star-radius': starSize / 2,
-    '--flex-direction': height > width ? 'column' : 'row',
   });
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -117,26 +122,18 @@ export default function Index() {
     }
   };
 
-  const { days, hours, minutes, seconds } = useTimeTillChristmas();
   return (
-    <ViewWrapper style={theme} direction={height > width ? 'column' : 'row'}>
-      <View className="flex-1 justify-center w-screen">
-        <View className="flex-1 justify-center items-center">
-          <Text className="text-red-600 font-bold text-2xl text-center">{`Only ${
-            days + 1
-          } sleeps until Christmas!`}</Text>
-        </View>
+    <ViewWrapper style={theme} direction={landscape ? 'row' : 'column'}>
+      <View className="flex-1 justify-center w-full">
+        <SleepsView />
       </View>
-      <ImageBackground contentFit="contain" source={image}>
-        <View className="h-[--image-height] w-[--image-width]">
-          <View className="h-[--star-size] w-[--star-size] rounded-[--star-radius] bg-[#ffffcc] animate-throb absolute top-[--star-top] right-[--star-right]" />
-          <View className="mx-[20] p-[10] flex-1 justify-start items-start">
-            <Text className="text-green-600 text-xl text-start">{`${days} days`}</Text>
-            <Text className="text-green-600 text-xl text-start">{`${hours} hours`}</Text>
-            <Text className="text-green-600 text-xl text-start">{`${minutes} minutes`}</Text>
-            <Text className="text-green-600 text-xl text-start">{`${seconds} seconds`}</Text>
-          </View>
-        </View>
+      <ImageBackground
+        style={{ width: imageWidth, height: imageHeight }}
+        contentFit="cover"
+        source={image}
+      >
+        <View className="h-[--star-size] w-[--star-size] rounded-[--star-radius] bg-[#ffffcc] animate-throb absolute top-[--star-top] right-[--star-right]" />
+        <CountdownView />
       </ImageBackground>
       <View className="flex-1 flex-column h-screen justify-center items-center w-screen">
         <Pressable
