@@ -7,6 +7,7 @@ import {
   Platform,
   Dimensions,
   SafeAreaView,
+  useWindowDimensions,
 } from 'react-native';
 import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
@@ -16,18 +17,6 @@ import '../global.css';
 
 const image = require('@/assets/images/morriscropped.jpg');
 const audioSource = require('@/assets/audio/o-christmas-tree.mp3');
-
-const { width } = Dimensions.get('screen');
-
-const imageWidth = 798;
-const imageHeight = 926;
-
-const scaledHeight = Math.floor((width * imageHeight) / imageWidth);
-
-const theme = vars({
-  '--image-height': scaledHeight,
-  '--image-width': width,
-});
 
 import '../global.css';
 import { useAppState } from '@/hooks/useAppState';
@@ -39,7 +28,52 @@ const fractionCompleteFromPosition = (
   return duration !== undefined ? (position ?? 0) / duration : 0;
 };
 
+function ViewWrapper(props: {
+  direction: 'row' | 'column';
+  children: any;
+  style: any;
+}) {
+  return props.direction === 'row' ? (
+    <SafeAreaView
+      style={props.style}
+      className="flex-1 flex-row justify-center items-start bg-[#ffffcc]"
+    >
+      {props.children}
+    </SafeAreaView>
+  ) : (
+    <SafeAreaView
+      style={props.style}
+      className="flex-1 justify-center items-start bg-[#ffffcc]"
+    >
+      {props.children}
+    </SafeAreaView>
+  );
+}
+
 export default function Index() {
+  const { width, height } = useWindowDimensions();
+
+  const imageWidth = 798;
+  const imageHeight = 926;
+
+  const scaledHeight =
+    height > width ? Math.floor((width * imageHeight) / imageWidth) : height;
+  const scaledWidth =
+    height > width ? width : (height * imageWidth) / imageHeight;
+  const starTop = Math.floor((scaledHeight * 20) / 435);
+  const starRight = Math.floor((scaledWidth * 85) / 375);
+  const starSize = Math.floor((scaledWidth * 40) / 375);
+
+  const theme = vars({
+    '--image-height': scaledHeight,
+    '--image-width': scaledWidth,
+    '--star-top': starTop,
+    '--star-right': starRight,
+    '--star-size': starSize,
+    '--star-radius': starSize / 2,
+    '--flex-direction': height > width ? 'column' : 'row',
+  });
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [wasPlaying, setWasPlaying] = useState(false);
   const [fractionComplete, setFractionComplete] = useState(0);
@@ -85,10 +119,7 @@ export default function Index() {
 
   const { days, hours, minutes, seconds } = useTimeTillChristmas();
   return (
-    <SafeAreaView
-      style={theme}
-      className="flex-1 justify-center items-start bg-[#ffffcc]"
-    >
+    <ViewWrapper style={theme} direction={height > width ? 'column' : 'row'}>
       <View className="flex-1 justify-center w-screen">
         <View className="flex-1 justify-center items-center">
           <Text className="text-red-600 font-bold text-2xl text-center">{`Only ${
@@ -98,6 +129,7 @@ export default function Index() {
       </View>
       <ImageBackground contentFit="contain" source={image}>
         <View className="h-[--image-height] w-[--image-width]">
+          <View className="h-[--star-size] w-[--star-size] rounded-[--star-radius] bg-[#ffffcc] animate-throb absolute top-[--star-top] right-[--star-right]" />
           <View className="mx-[20] p-[10] flex-1 justify-start items-start">
             <Text className="text-green-600 text-xl text-start">{`${days} days`}</Text>
             <Text className="text-green-600 text-xl text-start">{`${hours} hours`}</Text>
@@ -106,7 +138,7 @@ export default function Index() {
           </View>
         </View>
       </ImageBackground>
-      <View className="flex-1 justify-center w-screen">
+      <View className="flex-1 flex-column h-screen justify-center items-center w-screen">
         <Pressable
           onPress={togglePlayer}
           className="transition duration-500 hover:scale-110 focus:scale-110 active:scale-125"
@@ -116,6 +148,6 @@ export default function Index() {
           </Text>
         </Pressable>
       </View>
-    </SafeAreaView>
+    </ViewWrapper>
   );
 }
