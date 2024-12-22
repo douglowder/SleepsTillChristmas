@@ -10,6 +10,7 @@ describe('calculateTimeLeft', () => {
     expect(result.hours).toEqual(1); // change from daylight to standard time
     expect(result.minutes).toEqual(0);
     expect(result.seconds).toEqual(0);
+    expect(result.isChristmas).toBe(false);
   });
   it('Dec 1 2024, 12:00:00', () => {
     const result = calculateTimeLeftTillChristmas(
@@ -19,6 +20,7 @@ describe('calculateTimeLeft', () => {
     expect(result.hours).toEqual(0);
     expect(result.minutes).toEqual(0);
     expect(result.seconds).toEqual(0);
+    expect(result.isChristmas).toBe(false);
   });
   it('Jan 1 2025, 12:00:00', () => {
     const result = calculateTimeLeftTillChristmas(
@@ -28,6 +30,7 @@ describe('calculateTimeLeft', () => {
     expect(result.hours).toEqual(0);
     expect(result.minutes).toEqual(0);
     expect(result.seconds).toEqual(0);
+    expect(result.isChristmas).toBe(false);
   });
   it('Dec 25 2026, 8:00:00', () => {
     const result = calculateTimeLeftTillChristmas(
@@ -37,5 +40,6 @@ describe('calculateTimeLeft', () => {
     expect(result.hours).toEqual(0);
     expect(result.minutes).toEqual(0);
     expect(result.seconds).toEqual(0);
+    expect(result.isChristmas).toBe(true);
   });
 });

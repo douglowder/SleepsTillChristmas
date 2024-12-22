@@ -23,6 +23,7 @@ export type TimeLeft = {
   hours: number;
   minutes: number;
   seconds: number;
+  isChristmas: boolean;
 };
 
 /**
@@ -41,6 +42,7 @@ export const calculateTimeLeftTillChristmas: (epoch?: DateTime) => TimeLeft = (
       hours: 0,
       minutes: 0,
       seconds: 0,
+      isChristmas: true,
     };
   }
   // Start with 2024 -- if interval not valid (negative),
@@ -64,6 +66,7 @@ export const calculateTimeLeftTillChristmas: (epoch?: DateTime) => TimeLeft = (
     hours: intervalLengthInHours - 24 * intervalLengthInDays,
     minutes: intervalLengthInMinutes - 60 * intervalLengthInHours,
     seconds: intervalLengthInSeconds - 60 * intervalLengthInMinutes,
+    isChristmas: false,
   };
 };
 
