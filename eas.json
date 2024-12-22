@@ -18,6 +18,12 @@
         "simulator": true
       }
     },
+    "development_device": {
+      "extends": "development",
+      "ios": {
+        "simulator": false
+      }
+    },
     "development_tv": {
       "extends": "development",
       "env": {
