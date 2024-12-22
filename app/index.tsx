@@ -45,18 +45,23 @@ function ViewWrapper(props: {
 }
 
 function SleepsView() {
-  const { days } = useTimeTillChristmas(60.0);
+  const { days, isChristmas } = useTimeTillChristmas(5.0);
   return (
     <View className="flex-1 justify-center items-center">
-      <Text className="text-red-600 font-bold text-2xl text-center">{`Only ${
-        days + 1
-      } sleeps until Christmas!`}</Text>
+      <Text className="text-red-600 font-bold text-2xl text-center">
+        {isChristmas
+          ? "It's Christmas Day!!!"
+          : `Only ${days + 1} sleeps until Christmas!`}
+      </Text>
     </View>
   );
 }
 
 function CountdownView() {
-  const { days, hours, minutes, seconds } = useTimeTillChristmas();
+  const { days, hours, minutes, seconds, isChristmas } = useTimeTillChristmas();
+  if (isChristmas) {
+    return null;
+  }
   return (
     <View className="mx-[20] p-[10] flex-1 justify-start items-start">
       <Text className="text-green-600 text-xl text-start">{`${days} days`}</Text>
