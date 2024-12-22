@@ -48,6 +48,7 @@
       "image": "./assets/images/splash.png"
     },
     "icon": "./assets/images/icon.png",
+    "orientation": "portrait",
     "name": "DougsChristmasCountdown",
     "slug": "DougsChristmasCountdown",
     "extra": {
