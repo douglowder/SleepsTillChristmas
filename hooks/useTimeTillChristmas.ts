@@ -95,3 +95,14 @@ const useInterval: (callback: () => void, interval: number) => void = (
     return () => clearInterval(id);
   }, [interval]);
 };
+
+export const sleepsTillChristmasString = (timeLeft: TimeLeft) => {
+  const { days, isChristmas } = timeLeft;
+  if (isChristmas) {
+    return "It's Christmas Day!!";
+  }
+  if (days === 0) {
+    return `Only 1 sleep until Christmas!`;
+  }
+  return `Only ${days + 1} sleeps until Christmas!`;
+};

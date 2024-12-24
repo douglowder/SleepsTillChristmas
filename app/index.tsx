@@ -4,7 +4,10 @@ import { Text, View, Pressable, SafeAreaView } from 'react-native';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { useEffect, useState } from 'react';
 
-import { useTimeTillChristmas } from '@/hooks/useTimeTillChristmas';
+import {
+  sleepsTillChristmasString,
+  useTimeTillChristmas,
+} from '@/hooks/useTimeTillChristmas';
 import { useScaling } from '@/hooks/useScaling';
 
 import '../global.css';
@@ -45,13 +48,11 @@ function ViewWrapper(props: {
 }
 
 function SleepsView() {
-  const { days, isChristmas } = useTimeTillChristmas(5.0);
+  const timeLeft = useTimeTillChristmas(5.0);
   return (
     <View className="flex-1 justify-center items-center">
       <Text className="text-red-600 font-bold text-2xl text-center">
-        {isChristmas
-          ? "It's Christmas Day!!!"
-          : `Only ${days + 1} sleeps until Christmas!`}
+        {sleepsTillChristmasString(timeLeft)}
       </Text>
     </View>
   );
