@@ -40,6 +40,11 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.douglowder.DougsChristmasCountdown"
     },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
     "experiments": {
       "tsconfigPaths": true,
       "typedRoutes": true
