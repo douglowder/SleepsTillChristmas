@@ -27,7 +27,9 @@
       ],
       "expo-router",
       "expo-font",
-      "expo-audio"
+      "expo-audio",
+      "expo-build-properties",
+      "expo-web-browser"
     ],
     "android": {
       "package": "com.douglowder.DougsChristmasCountdown",
@@ -37,6 +39,7 @@
       ]
     },
     "ios": {
+      "appleTeamId": "P83ZV6W49Z",
       "supportsTablet": true,
       "bundleIdentifier": "com.douglowder.DougsChristmasCountdown"
     },
