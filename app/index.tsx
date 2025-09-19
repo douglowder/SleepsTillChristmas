@@ -1,6 +1,7 @@
 import { vars } from 'nativewind';
 import { ImageBackground } from 'expo-image';
-import { Text, View, Pressable, SafeAreaView } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { useEffect, useState } from 'react';
 
@@ -89,7 +90,9 @@ export default function Index() {
   const [wasPlaying, setWasPlaying] = useState(false);
   const [fractionComplete, setFractionComplete] = useState(0);
 
-  const player = useAudioPlayer(audioSource, 1000);
+  const player = useAudioPlayer(audioSource, {
+    updateInterval: 1000,
+  });
   const status = useAudioPlayerStatus(player);
 
   useAppState((activating) => {
@@ -143,6 +146,8 @@ export default function Index() {
       </ImageBackground>
       <View className="flex-1 flex-column h-screen justify-center items-center w-screen">
         <Pressable
+          accessibilityRole="button"
+          tvParallaxProperties={{ enabled: false }}
           onPress={togglePlayer}
           className="transition duration-500 hover:scale-110 focus:scale-110 active:scale-125"
         >
