@@ -56,12 +56,17 @@
     },
     "production_tv": {
       "extends": "production", 
+      "ios": {
+        "credentialsSource": "local",
+        "simulator": false
+      },
       "env": {
         "EXPO_TV": "1"
       }
     }
   },
   "submit": {
-    "production": {}
+    "production": {},
+    "production_tv": {}
   }
 }
