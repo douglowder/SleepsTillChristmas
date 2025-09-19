@@ -41,6 +41,12 @@
     "ios": {
       "appleTeamId": "P83ZV6W49Z",
       "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      },
       "bundleIdentifier": "com.douglowder.DougsChristmasCountdown"
     },
     "web": {
