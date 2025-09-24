@@ -50,26 +50,61 @@ function ViewWrapper(props: {
 
 function SleepsView() {
   const timeLeft = useTimeTillChristmas(5.0);
+  const { landscape } = useScaling();
   return (
     <View className="flex-1 justify-center items-center">
-      <Text className="text-red-600 font-bold text-2xl text-center">
+      <Text
+        className={`text-red-600 font-bold ${
+          landscape ? 'text-[3vw]' : 'text-[3vh]'
+        } text-center`}
+      >
         {sleepsTillChristmasString(timeLeft)}
       </Text>
     </View>
   );
 }
 
+function PlayMusicView(props: {
+  togglePlayer: () => void;
+  wasPlaying: boolean;
+}) {
+  const { landscape } = useScaling();
+  const { togglePlayer, wasPlaying } = props;
+  return (
+    <View className="flex-1 justify-center items-center">
+      <Pressable
+        accessibilityRole="button"
+        tvParallaxProperties={{ enabled: false }}
+        onPress={togglePlayer}
+        className="transition duration-500 hover:scale-110 focus:scale-110 active:scale-125"
+      >
+        <Text
+          className={`text-green-800 font-bold ${
+            landscape ? 'text-[3vw]' : 'text-[3vh]'
+          } text-center`}
+        >
+          {wasPlaying ? 'Pause Music' : 'Play Music'}
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+
 function CountdownView() {
+  const { landscape } = useScaling();
   const { days, hours, minutes, seconds, isChristmas } = useTimeTillChristmas();
   if (isChristmas) {
     return null;
   }
+  const className = `text-green-600 ${
+    landscape ? 'text-[1.75vw]' : 'text-[2vh]'
+  } text-[3vw] text-start`;
   return (
     <View className="mx-[20] p-[10] flex-1 justify-start items-start">
-      <Text className="text-green-600 text-xl text-start">{`${days} days`}</Text>
-      <Text className="text-green-600 text-xl text-start">{`${hours} hours`}</Text>
-      <Text className="text-green-600 text-xl text-start">{`${minutes} minutes`}</Text>
-      <Text className="text-green-600 text-xl text-start">{`${seconds} seconds`}</Text>
+      <Text className={className}>{`${days} days`}</Text>
+      <Text className={className}>{`${hours} hours`}</Text>
+      <Text className={className}>{`${minutes} minutes`}</Text>
+      <Text className={className}>{`${seconds} seconds`}</Text>
     </View>
   );
 }
@@ -145,16 +180,7 @@ export default function Index() {
         <CountdownView />
       </ImageBackground>
       <View className="flex-1 flex-column h-screen justify-center items-center w-screen">
-        <Pressable
-          accessibilityRole="button"
-          tvParallaxProperties={{ enabled: false }}
-          onPress={togglePlayer}
-          className="transition duration-500 hover:scale-110 focus:scale-110 active:scale-125"
-        >
-          <Text className="text-green-800 font-bold text-2xl text-center">
-            {wasPlaying ? 'Pause Music' : 'Play Music'}
-          </Text>
-        </Pressable>
+        <PlayMusicView togglePlayer={togglePlayer} wasPlaying={wasPlaying} />
       </View>
     </ViewWrapper>
   );
