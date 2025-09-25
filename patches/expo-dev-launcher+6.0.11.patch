@@ -1,16 +1,8 @@
 diff --git a/node_modules/expo-dev-launcher/ios/SwiftUI/DevServersView.swift b/node_modules/expo-dev-launcher/ios/SwiftUI/DevServersView.swift
-index 8520f7e..c1f42b2 100644
+index 8520f7e..7b8afd9 100644
 --- a/node_modules/expo-dev-launcher/ios/SwiftUI/DevServersView.swift
 +++ b/node_modules/expo-dev-launcher/ios/SwiftUI/DevServersView.swift
-@@ -1,6 +1,7 @@
- // Copyright 2015-present 650 Industries. All rights reserved.
- 
- import SwiftUI
-+import ExpoModulesCore
- import Combine
- 
- // swiftlint:disable closure_body_length
-@@ -113,6 +114,7 @@ struct DevServersView: View {
+@@ -113,6 +113,7 @@ struct DevServersView: View {
          showingInfoDialog = true
        } label: {
          Text("info".uppercased())
