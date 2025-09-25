@@ -1,0 +1,56 @@
+diff --git a/node_modules/expo-dev-launcher/ios/SwiftUI/DevServersView.swift b/node_modules/expo-dev-launcher/ios/SwiftUI/DevServersView.swift
+index 8520f7e..c1f42b2 100644
+--- a/node_modules/expo-dev-launcher/ios/SwiftUI/DevServersView.swift
++++ b/node_modules/expo-dev-launcher/ios/SwiftUI/DevServersView.swift
+@@ -1,6 +1,7 @@
+ // Copyright 2015-present 650 Industries. All rights reserved.
+ 
+ import SwiftUI
++import ExpoModulesCore
+ import Combine
+ 
+ // swiftlint:disable closure_body_length
+@@ -113,6 +114,7 @@ struct DevServersView: View {
+         showingInfoDialog = true
+       } label: {
+         Text("info".uppercased())
++          .foregroundColor(.primary)
+           #if os(tvOS)
+           .font(.system(size: 24))
+           #else
+diff --git a/node_modules/expo-dev-launcher/ios/SwiftUI/HomeTabView.swift b/node_modules/expo-dev-launcher/ios/SwiftUI/HomeTabView.swift
+index f0c619d..43b9e1f 100644
+--- a/node_modules/expo-dev-launcher/ios/SwiftUI/HomeTabView.swift
++++ b/node_modules/expo-dev-launcher/ios/SwiftUI/HomeTabView.swift
+@@ -51,6 +51,7 @@ struct HomeTabView: View {
+         .padding()
+       }
+     }
++    .background()
+     .overlay(
+       DevServerInfoModal(showingInfoDialog: $showingInfoDialog)
+     )
+diff --git a/node_modules/expo-dev-launcher/ios/SwiftUI/SettingsTabView.swift b/node_modules/expo-dev-launcher/ios/SwiftUI/SettingsTabView.swift
+index c4ae8d5..35d3c2c 100644
+--- a/node_modules/expo-dev-launcher/ios/SwiftUI/SettingsTabView.swift
++++ b/node_modules/expo-dev-launcher/ios/SwiftUI/SettingsTabView.swift
+@@ -56,6 +56,7 @@ struct SettingsTabView: View {
+       .padding()
+     }
+     .frame(maxWidth: .infinity, maxHeight: .infinity)
++    .background()
+     .navigationBarHidden(true)
+   }
+ 
+diff --git a/node_modules/expo-dev-launcher/ios/SwiftUI/UpdatesTab/UpdatesTabView.swift b/node_modules/expo-dev-launcher/ios/SwiftUI/UpdatesTab/UpdatesTabView.swift
+index 7e172d9..ba7436b 100644
+--- a/node_modules/expo-dev-launcher/ios/SwiftUI/UpdatesTab/UpdatesTabView.swift
++++ b/node_modules/expo-dev-launcher/ios/SwiftUI/UpdatesTab/UpdatesTabView.swift
+@@ -20,6 +20,7 @@ struct UpdatesTabView: View {
+         }
+       }
+     }
++    .background()
+   }
+ }
+ 
