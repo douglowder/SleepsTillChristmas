@@ -20,14 +20,19 @@
       [
         "expo-asset",
         {
-          "assets": ["./assets/audio/o-christmas-tree.mp3"]
+          "assets": [
+            "./assets/audio/o-christmas-tree.mp3"
+          ]
         }
       ],
       "expo-router",
       "expo-font",
       "expo-audio",
       "expo-build-properties",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-image",
+      "expo-splash-screen",
+      "expo-status-bar"
     ],
     "android": {
       "package": "com.douglowder.DougsChristmasCountdown",
